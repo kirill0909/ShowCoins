@@ -1,7 +1,6 @@
 package com.example.showcoins.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +13,17 @@ import com.example.showcoins.viewmodel.CoinsViewModelFactory
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.example.showcoins.behavior.CoinWorker
+import com.example.showcoins.behavior.classes.SortingByAZ
+import com.example.showcoins.behavior.interfaces.SortingByAZBehavior
 
-class CoinsListFragment : Fragment() {
+class CoinsListFragment : CoinWorker() {
 
     private lateinit var binding: FragmentCoinsListBinding
     private val adapter by lazy { CoinsListAdapter() }
     private lateinit var coinsViewModel: CoinsViewModel
     private val TAG = "CoinsListFragment"
+    override var sortingByAZBehavior: SortingByAZBehavior = SortingByAZ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +46,11 @@ class CoinsListFragment : Fragment() {
 
         //call method for get coins and observe for it
         coinsViewModel.getCoins()
-        coinsViewModel.listCoins.observe(viewLifecycleOwner) { response ->
-            if(response.isSuccessful) {
-                adapter.setData(response.body()!!)
-            }else {
-                Log.d(TAG, "${response.code()}")
+        coinsViewModel.listCoins.observe(viewLifecycleOwner) { coins ->
+            if (coins.isNotEmpty()) {
+                adapter.setData(coins)
+            } else {
+                Log.d(TAG, "Error")
             }
         }
 
@@ -67,13 +70,21 @@ class CoinsListFragment : Fragment() {
     *This method processes tap on the popup menu item
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.sorting_by_az -> toast("you tap on the sorting by A-Z")
+        when (item.itemId) {
+            R.id.sorting_by_az -> setChangesSortedByAZ()
             R.id.sorting_by_za -> toast("you tap on the sorting by Z-A")
             R.id.sorting_by_high_value -> toast("you tap on the sorting by high value")
             R.id.sorting_by_low_value -> toast("you tap on the sorting by low value")
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /*
+    *This method set changes in recyclerview and scroll to the top of it
+     */
+    private fun setChangesSortedByAZ() {
+        adapter.setData(performSortingByAZ(coinsViewModel.listCoins.value!!))
+        binding.recyclerViewCoins.layoutManager?.scrollToPosition(0)
     }
 
     /*

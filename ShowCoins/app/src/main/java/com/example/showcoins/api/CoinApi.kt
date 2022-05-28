@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface CoinApi {
 
     @GET("v1/ticker")
-    suspend fun getCoins(): Response<List<Coin>>
+    suspend fun getCoins(): List<Coin>
 }
