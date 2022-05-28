@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcoins.R
 import com.example.showcoins.databinding.CoinsItemBinding
+import com.example.showcoins.model.Coin
 import com.example.showcoins.util.CoinsDiffUtil
 
 class CoinsListAdapter : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHolder>() {
 
-    private var fakerList = mutableListOf<String>()
+    private var coinsList = listOf<Coin>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinsListViewHolder {
         return CoinsListViewHolder(
@@ -20,19 +21,19 @@ class CoinsListAdapter : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHold
     }
 
     override fun onBindViewHolder(holder: CoinsListViewHolder, position: Int) {
-        val coin = fakerList[position]
+        val coin = coinsList[position]
 
-        holder.tvCoin.text = coin
+        holder.tvCoin.text = coin.name
     }
 
     override fun getItemCount(): Int {
-        return fakerList.size
+        return coinsList.size
     }
 
-    fun setData(newCoinsList: MutableList<String>) {
-        val diffUtil = CoinsDiffUtil(fakerList, newCoinsList)
+    fun setData(newCoinsList: List<Coin>) {
+        val diffUtil = CoinsDiffUtil(coinsList, newCoinsList)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
-        fakerList = newCoinsList
+        coinsList = newCoinsList
         diffResults.dispatchUpdatesTo(this)
     }
 
