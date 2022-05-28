@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShowCoins</string>
+    <string name="list_coins">List Coins</string>
+    <string name="list_favourites_coins_fragment">Favourites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
