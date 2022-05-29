@@ -7,6 +7,7 @@
     <string name="sorting_by_high_value">Sorting by high value</string>
     <string name="sorting_by_low_value">Sorting by low value</string>
     <string name="sorting_by">Sorting by</string>
+    <string name="item_coin">%s : %s$</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

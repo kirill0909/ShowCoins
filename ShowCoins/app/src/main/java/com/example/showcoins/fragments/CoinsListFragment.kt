@@ -12,7 +12,6 @@ import com.example.showcoins.viewmodel.CoinsViewModel
 import com.example.showcoins.viewmodel.CoinsViewModelFactory
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import com.example.showcoins.behavior.CoinWorker
 import com.example.showcoins.behavior.classes.SortingByAZ
 import com.example.showcoins.behavior.interfaces.SortingByAZBehavior
@@ -20,9 +19,8 @@ import com.example.showcoins.behavior.interfaces.SortingByAZBehavior
 class CoinsListFragment : CoinWorker() {
 
     private lateinit var binding: FragmentCoinsListBinding
-    private val adapter by lazy { CoinsListAdapter() }
+    private val adapter by lazy { CoinsListAdapter(requireContext()) }
     private lateinit var coinsViewModel: CoinsViewModel
-    private val TAG = "CoinsListFragment"
     override var sortingByAZBehavior: SortingByAZBehavior = SortingByAZ()
 
     override fun onCreateView(
@@ -49,9 +47,10 @@ class CoinsListFragment : CoinWorker() {
             if (coins.isNotEmpty()) {
                 adapter.setData(coins)
             } else {
-                Log.d(TAG, "Error")
+                Log.d("CoinsListFragment", "Error")
             }
         }
+
 
         setHasOptionsMenu(true)
         return view
@@ -71,17 +70,10 @@ class CoinsListFragment : CoinWorker() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sorting_by_az -> coinsViewModel.sortedByAz(binding)
-            R.id.sorting_by_za -> toast("you tap on the sorting by Z-A")
-            R.id.sorting_by_high_value -> toast("you tap on the sorting by high value")
-            R.id.sorting_by_low_value -> toast("you tap on the sorting by low value")
+            R.id.sorting_by_za -> coinsViewModel.sortedByZa(binding)
+            R.id.sorting_by_high_value -> coinsViewModel.sortedByHighValue(binding)
+            R.id.sorting_by_low_value -> coinsViewModel.sortedByLowValue(binding)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    /*
-    *This method show simple notification
-     */
-    private fun toast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

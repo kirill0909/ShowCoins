@@ -1,5 +1,6 @@
 package com.example.showcoins.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.example.showcoins.databinding.CoinsItemBinding
 import com.example.showcoins.model.Coin
 import com.example.showcoins.util.CoinsDiffUtil
 
-class CoinsListAdapter : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHolder>() {
+class CoinsListAdapter(private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHolder>() {
 
     private var coinsList = listOf<Coin>()
 
@@ -23,7 +24,7 @@ class CoinsListAdapter : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHold
     override fun onBindViewHolder(holder: CoinsListViewHolder, position: Int) {
         val coin = coinsList[position]
 
-        holder.tvCoin.text = coin.name
+        holder.tvCoin.text = context.getString(R.string.item_coin, coin.name, coin.price_usd.substring(0, 7))
     }
 
     override fun getItemCount(): Int {
@@ -41,6 +42,6 @@ class CoinsListAdapter : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHold
         private val binding = CoinsItemBinding.bind(itemView)
 
         val tvCoin = binding.tvCoin
-        val ivStar = binding.ivStar
+        //val ivStar = binding.ivStar
     }
 }
