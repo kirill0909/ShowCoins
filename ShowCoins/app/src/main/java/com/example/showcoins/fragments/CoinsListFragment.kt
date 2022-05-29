@@ -45,7 +45,6 @@ class CoinsListFragment : CoinWorker() {
         binding.recyclerViewCoins.layoutManager = LinearLayoutManager(requireContext())
 
         //call method for get coins and observe for it
-        coinsViewModel.getCoins()
         coinsViewModel.listCoins.observe(viewLifecycleOwner) { coins ->
             if (coins.isNotEmpty()) {
                 adapter.setData(coins)
@@ -71,20 +70,12 @@ class CoinsListFragment : CoinWorker() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sorting_by_az -> setChangesSortedByAZ()
+            R.id.sorting_by_az -> coinsViewModel.sortedByAz(binding)
             R.id.sorting_by_za -> toast("you tap on the sorting by Z-A")
             R.id.sorting_by_high_value -> toast("you tap on the sorting by high value")
             R.id.sorting_by_low_value -> toast("you tap on the sorting by low value")
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    /*
-    *This method set changes in recyclerview and scroll to the top of it
-     */
-    private fun setChangesSortedByAZ() {
-        adapter.setData(performSortingByAZ(coinsViewModel.listCoins.value!!))
-        binding.recyclerViewCoins.layoutManager?.scrollToPosition(0)
     }
 
     /*
