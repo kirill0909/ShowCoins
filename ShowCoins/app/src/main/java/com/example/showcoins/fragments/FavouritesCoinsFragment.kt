@@ -47,7 +47,6 @@ class FavouritesCoinsFragment : CoinWorker(), FavouriteCoinClickListener {
 
         favouriteCoinViewModel.favouriteListCoins.observe(viewLifecycleOwner) { favouriteCoin ->
             adapter.setData(favouriteCoin)
-            //Log.d("FindNull", "From fragment ${favouriteCoin}")
         }
 
 		setHasOptionsMenu(true)
@@ -94,10 +93,10 @@ class FavouritesCoinsFragment : CoinWorker(), FavouriteCoinClickListener {
          */
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
-                R.id.sorting_by_az -> favouriteCoinViewModel.sortedByAZ(adapter)
-                R.id.sorting_by_za -> favouriteCoinViewModel.sortedByZA(adapter)
-                R.id.sorting_by_high_value ->favouriteCoinViewModel.sortedByHighValue(adapter)
-                R.id.sorting_by_low_value -> favouriteCoinViewModel.sortedByLowValue(adapter)
+                R.id.sorting_by_az -> favouriteCoinViewModel.sortedByAZ()
+                R.id.sorting_by_za -> favouriteCoinViewModel.sortedByZA()
+                R.id.sorting_by_high_value ->favouriteCoinViewModel.sortedByHighValue()
+                R.id.sorting_by_low_value -> favouriteCoinViewModel.sortedByLowValue()
             }
             return super.onOptionsItemSelected(item)
         }

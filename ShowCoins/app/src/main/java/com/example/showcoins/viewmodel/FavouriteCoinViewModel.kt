@@ -1,9 +1,7 @@
 package com.example.showcoins.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.showcoins.data.AppDatabase
 import com.example.showcoins.model.FavouriteCoin
 import com.example.showcoins.repository.FavouriteCoinRepository
@@ -14,7 +12,7 @@ import com.example.showcoins.adapters.FavouriteCoinsListAdapter
 
 class FavouriteCoinViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var _favouriteListCoins: LiveData<List<FavouriteCoin>>
+    private var _favouriteListCoins: MutableLiveData<List<FavouriteCoin>>
     val favouriteListCoins: LiveData<List<FavouriteCoin>>
         get() = _favouriteListCoins
 
@@ -24,31 +22,36 @@ class FavouriteCoinViewModel(application: Application) : AndroidViewModel(applic
     init {
         val favouriteCoinDao = AppDatabase.getDatabase(application).favouriteCoinDao()
         repository = FavouriteCoinRepository(favouriteCoinDao)
-        _favouriteListCoins = repository.allFavouriteCoins
+        _favouriteListCoins = repository.allFavouriteCoins.toMutableLiveData()
     }
 
-    fun sortedByAZ(adapter: FavouriteCoinsListAdapter) {
-        val sortedList =
-            _favouriteListCoins.value.orEmpty().toMutableList().sortedBy { it.coinName }
-        adapter.setData(sortedList)
-
+    /*
+    *This method extends LiveData and return MutableLiveData
+     */
+    private fun <T> LiveData<T>.toMutableLiveData(): MutableLiveData<T> {
+        val mediatorLiveData = MediatorLiveData<T>()
+        mediatorLiveData.addSource(this) {
+            mediatorLiveData.value = it
+        }
+        return mediatorLiveData
     }
 
-    fun sortedByZA(adapter: FavouriteCoinsListAdapter) {
-        adapter.setData(_favouriteListCoins.value.orEmpty().toMutableList().sortedBy { it.coinName }
+    fun sortedByAZ() {
+        _favouriteListCoins.postValue(_favouriteListCoins.value.orEmpty().sortedBy { it.coinName })
+    }
+
+    fun sortedByZA() {
+        _favouriteListCoins.postValue(_favouriteListCoins.value.orEmpty().sortedBy { it.coinName }
             .reversed())
     }
 
-    fun sortedByHighValue(adapter: FavouriteCoinsListAdapter) {
-        adapter.setData(
-            _favouriteListCoins.value.orEmpty().toMutableList().sortedBy { it.coinPrice }.reversed()
-        )
+    fun sortedByHighValue() {
+        _favouriteListCoins.postValue(
+            _favouriteListCoins.value.orEmpty().sortedByDescending { it.coinPrice })
     }
 
-    fun sortedByLowValue(adapter: FavouriteCoinsListAdapter) {
-        adapter.setData(
-            _favouriteListCoins.value.orEmpty().toMutableList().sortedBy { it.coinPrice }
-        )
+    fun sortedByLowValue() {
+        _favouriteListCoins.postValue(_favouriteListCoins.value.orEmpty().sortedBy { it.coinPrice })
     }
 
     fun addCoinToFavourite(favouriteCoin: FavouriteCoin) {
