@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcoins.R
+import com.example.showcoins.behavior.interfaces.CoinClickListener
 import com.example.showcoins.databinding.CoinsItemBinding
 import com.example.showcoins.model.Coin
 import com.example.showcoins.util.CoinsDiffUtil
 
-class CoinsListAdapter(private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHolder>() {
+class CoinsListAdapter(private val context: Context, private val listener: CoinClickListener) :
+    RecyclerView.Adapter<CoinsListAdapter.CoinsListViewHolder>() {
 
     private var coinsList = listOf<Coin>()
 
@@ -24,7 +26,12 @@ class CoinsListAdapter(private val context: Context) : RecyclerView.Adapter<Coin
     override fun onBindViewHolder(holder: CoinsListViewHolder, position: Int) {
         val coin = coinsList[position]
 
-        holder.tvCoin.text = context.getString(R.string.item_coin, coin.name, coin.price_usd.substring(0, 7))
+        holder.tvCoin.text =
+            context.getString(R.string.item_coin, coin.name, coin.price_usd.substring(0, 7))
+
+        holder.ivMoreButton.setOnClickListener {
+            listener.onMoreButtonClick(coin, holder.itemView)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -42,6 +49,6 @@ class CoinsListAdapter(private val context: Context) : RecyclerView.Adapter<Coin
         private val binding = CoinsItemBinding.bind(itemView)
 
         val tvCoin = binding.tvCoin
-        //val ivStar = binding.ivStar
+        val ivMoreButton = binding.ivMoreButton
     }
 }

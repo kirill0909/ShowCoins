@@ -27,18 +27,18 @@
             android:textSize="18sp"
             android:textStyle="bold"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/iv_star"
+            card_view:layout_constraintEnd_toStartOf="@+id/iv_more_button"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_star"
+            android:id="@+id/iv_more_button"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_star"
+            android:src="@drawable/ic_more_button"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />

@@ -9,6 +9,8 @@
         <entry key="app/src/main/res/layout/fragment_favourites_coins.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/menu/more_button_favourite_popup_menu.xml" value="0.35625" />
+        <entry key="app/src/main/res/menu/more_button_popup_menu.xml" value="0.35625" />
         <entry key="app/src/main/res/menu/sorting_menu.xml" value="0.35625" />
       </map>
     </option>

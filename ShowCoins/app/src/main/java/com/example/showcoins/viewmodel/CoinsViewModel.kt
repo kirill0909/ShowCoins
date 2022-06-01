@@ -1,15 +1,13 @@
 package com.example.showcoins.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.showcoins.model.Coin
 import com.example.showcoins.repository.Repository
 import kotlinx.coroutines.launch
 import com.example.showcoins.databinding.FragmentCoinsListBinding
+import androidx.lifecycle.*
 
-class CoinsViewModel(private val repository: Repository) : ViewModel() {
+class CoinsViewModel(
+    private val repository: Repository) : ViewModel() {
 
     private var _listCoins: MutableLiveData<List<Coin>> = MutableLiveData()
     val listCoins: LiveData<List<Coin>>

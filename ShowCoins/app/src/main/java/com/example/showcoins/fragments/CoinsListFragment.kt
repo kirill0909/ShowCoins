@@ -1,27 +1,33 @@
 package com.example.showcoins.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.showcoins.R
 import com.example.showcoins.adapters.CoinsListAdapter
+import com.example.showcoins.behavior.CoinWorker
+import com.example.showcoins.behavior.classes.AddCoinToFavourite
+import com.example.showcoins.behavior.interfaces.CoinClickListener
+import com.example.showcoins.behavior.interfaces.AddCoinToFavouriteBehavior
 import com.example.showcoins.databinding.FragmentCoinsListBinding
+import com.example.showcoins.model.Coin
 import com.example.showcoins.repository.Repository
 import com.example.showcoins.viewmodel.CoinsViewModel
 import com.example.showcoins.viewmodel.CoinsViewModelFactory
-import android.util.Log
-import android.view.*
-import com.example.showcoins.behavior.CoinWorker
-import com.example.showcoins.behavior.classes.SortingByAZ
-import com.example.showcoins.behavior.interfaces.SortingByAZBehavior
+import com.example.showcoins.viewmodel.FavouriteCoinViewModel
 
-class CoinsListFragment : CoinWorker() {
+class CoinsListFragment : CoinWorker(), CoinClickListener {
 
     private lateinit var binding: FragmentCoinsListBinding
-    private val adapter by lazy { CoinsListAdapter(requireContext()) }
+    private val adapter by lazy { CoinsListAdapter(requireContext(), this) }
     private lateinit var coinsViewModel: CoinsViewModel
-    override var sortingByAZBehavior: SortingByAZBehavior = SortingByAZ()
+    override var addCoinToFavouriteBehavior: AddCoinToFavouriteBehavior = AddCoinToFavourite()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +62,42 @@ class CoinsListFragment : CoinWorker() {
         return view
     }
 
+    @SuppressLint("DiscouragedPrivateApi")
+    override fun onMoreButtonClick(coin: Coin, view: View) {
+        val favouriteCoinViewModel =
+            ViewModelProvider(this)[FavouriteCoinViewModel::class.java]
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.END)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.context_to_favourite -> {
+                    if(favouriteCoinViewModel.isFavouriteCoinExist(coin.name)) {
+                        toast("Coin: ${coin.name} already exist in favourites")
+                    }else {
+                        performAddCoinToFavourite(favouriteCoinViewModel, coin, view)
+                    }
+                    true
+                }
+                else -> false
+            }
+
+        }
+        popupMenu.inflate(R.menu.more_button_popup_menu)
+        try {
+            val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+            fieldMPopup.isAccessible = true
+            val mPopup = fieldMPopup.get(popupMenu)
+            mPopup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                .invoke(mPopup, true)
+        } catch (e: Exception) {
+            Log.d("CategoriesFragment", "Error showing menu icons", e)
+        } finally {
+            popupMenu.show()
+        }
+    }
+
     /*
-    *This method create and options menu to the toolbar
-     */
+        *This method create and options menu to the toolbar
+         */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sorting_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -75,5 +114,12 @@ class CoinsListFragment : CoinWorker() {
             R.id.sorting_by_low_value -> coinsViewModel.sortedByLowValue(binding)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /*
+    *This message show simple notification
+     */
+    private fun toast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }
