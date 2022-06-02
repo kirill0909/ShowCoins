@@ -1,6 +1,7 @@
 package com.example.showcoins.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +37,7 @@ class FavouriteCoinsListAdapter(
             context.getString(
                 R.string.item_coin,
                 favouriteCoin.coinName,
-                favouriteCoin.coinPrice.toString().substring(0, 7)
+                favouriteCoin.coinPrice
             )
 
         holder.ivMoreButton.setOnClickListener {

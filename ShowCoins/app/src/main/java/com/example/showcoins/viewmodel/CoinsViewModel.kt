@@ -31,7 +31,6 @@ class CoinsViewModel(
     fun sortedByAz(binding: FragmentCoinsListBinding) {
         _listCoins.postValue(_listCoins.value?.sortedBy { it.name })
         binding.recyclerViewCoins.layoutManager?.scrollToPosition(0)
-
     }
 
     /*
@@ -40,7 +39,6 @@ class CoinsViewModel(
     fun sortedByZa(binding: FragmentCoinsListBinding) {
         _listCoins.postValue(_listCoins.value?.sortedBy { it.name }?.reversed())
         binding.recyclerViewCoins.layoutManager?.scrollToPosition(0)
-
     }
 
     /*
@@ -57,7 +55,5 @@ class CoinsViewModel(
     fun sortedByLowValue(binding: FragmentCoinsListBinding) {
         _listCoins.postValue(_listCoins.value?.sortedBy { it.price_usd.toDouble() })
         binding.recyclerViewCoins.layoutManager?.scrollToPosition(0)
-
     }
-
 }

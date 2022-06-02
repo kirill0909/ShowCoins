@@ -27,7 +27,7 @@ class CoinsListAdapter(private val context: Context, private val listener: CoinC
         val coin = coinsList[position]
 
         holder.tvCoin.text =
-            context.getString(R.string.item_coin, coin.name, coin.price_usd.substring(0, 7))
+            context.getString(R.string.item_coin, coin.name, coin.price_usd)
 
         holder.ivMoreButton.setOnClickListener {
             listener.onMoreButtonClick(coin, holder.itemView)

@@ -8,7 +8,6 @@ import com.example.showcoins.repository.FavouriteCoinRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import com.example.showcoins.adapters.FavouriteCoinsListAdapter
 
 class FavouriteCoinViewModel(application: Application) : AndroidViewModel(application) {
 

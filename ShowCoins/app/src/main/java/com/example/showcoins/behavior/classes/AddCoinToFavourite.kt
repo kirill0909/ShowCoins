@@ -17,7 +17,7 @@ class AddCoinToFavourite : AddCoinToFavouriteBehavior {
         coin: Coin,
         view: View
     ) {
-        val favouriteCoin = FavouriteCoin(0, coin.name, coin.price_usd.toDouble(), true)
+        val favouriteCoin = FavouriteCoin(0, coin.name, coin.price_usd, true)
         favouriteCoinViewModel.addCoinToFavourite(favouriteCoin)
         showSnackBar(view, "Coin: ${favouriteCoin.coinName} was add to favourite")
     }

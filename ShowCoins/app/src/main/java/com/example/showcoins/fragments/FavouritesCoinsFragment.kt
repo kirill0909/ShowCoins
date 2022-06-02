@@ -74,7 +74,7 @@ class FavouritesCoinsFragment : CoinWorker(), FavouriteCoinClickListener {
             mPopup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(mPopup, true)
         } catch (e: Exception) {
-            Log.d("CategoriesFragment", "Error showing menu icons", e)
+            Log.d("FavouriteCoinsFragment", "Error showing menu icons", e)
         } finally {
             popupMenu.show()
         }

@@ -11,6 +11,6 @@ data class FavouriteCoin(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val coinName: String,
-    val coinPrice: Double,
+    val coinPrice: String,
     var isFavourite: Boolean
 ) : Parcelable
